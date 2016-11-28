@@ -1,13 +1,12 @@
 package com.cmpe.raft.consensus.node.state.impl;
 
 import com.cmpe.raft.consensus.app.Application;
+import com.cmpe.raft.consensus.jobs.HeartBeatJob;
 import com.cmpe.raft.consensus.model.HeartBeat;
 import com.cmpe.raft.consensus.model.Vote;
 import com.cmpe.raft.consensus.node.Node;
 import com.cmpe.raft.consensus.node.state.NodeState;
 import com.cmpe.raft.consensus.util.ServiceUtil;
-import com.sun.deploy.services.Service;
-import com.sun.jersey.core.impl.provider.entity.XMLJAXBElementProvider;
 
 import java.util.Date;
 
@@ -22,8 +21,14 @@ public class Leader implements NodeState {
         this.node = node;
     }
 
+    @Override
     public void performTask() {
-        //TODO: yay, I've to send hear beast to all
+        //TODO: yay, I've to keep sending heart beat to all
+        for (String host : Application.getClusterNodes().keySet()) {
+            for (Integer port : Application.getClusterNodes().get(host)) {
+                new HeartBeatJob(host, port).sendHeartBeat();
+            }
+        }
     }
 
     @Override
@@ -38,11 +43,6 @@ public class Leader implements NodeState {
 
     @Override
     public Vote onCandidacyRequest(long term) {
-        Vote vote = new Vote();
-        vote.setPort(Application.getPort());
-        vote.setIp(Application.getIp());
-        vote.setDate(new Date());
-        vote.setVote(false);    // You wish ! I'm not dead yet
-        return vote;
+        return ServiceUtil.constructVote(node, false);    // You wish ! I'm not dead yet
     }
 }

@@ -26,6 +26,7 @@ public class Follower implements NodeState, Callable {
         stopWatch = new StopWatch(10000, this);
     }
 
+    @Override
     public void performTask() {
         System.out.println(Follower.class.getCanonicalName() + " perform task.");
         stopWatch.start();
@@ -43,16 +44,11 @@ public class Follower implements NodeState, Callable {
 
     @Override
     public Vote onCandidacyRequest(long term) {
-        Vote vote = new Vote();
-        vote.setPort(Application.getPort());
-        vote.setIp(Application.getIp());
-        vote.setDate(new Date());
-        if(node.getTerm() < term) {
-            vote.setVote(true);     // Yes, I vote for you, as you are better leader than my current leader
+        if (node.getTerm() < term) {
+            return ServiceUtil.constructVote(node, true);     // Yes, I vote for you, as you are better leader than my current leader
         } else {
-            vote.setVote(false);    // Sorry, I'm already following someone better
+            return ServiceUtil.constructVote(node, false);    // Sorry, I'm already following someone better
         }
-        return vote;
     }
 
     @Override

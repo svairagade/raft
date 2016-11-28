@@ -2,6 +2,7 @@ package com.cmpe.raft.consensus.client;
 
 import com.cmpe.raft.consensus.app.Application;
 import com.cmpe.raft.consensus.model.HeartBeat;
+import com.cmpe.raft.consensus.model.Vote;
 import com.cmpe.raft.consensus.node.Node;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -32,11 +33,11 @@ public class NodeClient {
 
     private void initialize() {
         client = HttpClients.createDefault();
-        apiURL = "http://" + host + ":" + port + "/raft/node?ip="+ Application.getIp() +"&port="+Application.getPort()+"&term=%d"; // Using sample instead of g
+        apiURL = "http://" + host + ":" + port + "/raft/node/%s?ip="+ Application.getIp() +"&port="+Application.getPort()+"&term=%d"; // Using sample instead of g
     }
 
     public HeartBeat sendHeartBeat() {
-        String getHttpUri = String.format(apiURL, Node.getInstance().getTerm());
+        String getHttpUri = String.format(apiURL, "heartbeat", Node.getInstance().getTerm());
         System.out.println(NodeClient.class.getCanonicalName()+" Get URI "+ getHttpUri);
         HttpGet httpGet = new HttpGet(getHttpUri);
         httpGet.setHeader("Accept", "application/json");
@@ -60,9 +61,36 @@ public class NodeClient {
         return heartBeat;
     }
 
+    public Vote sendCandidacyRequest() {
+        String getHttpUri = String.format(apiURL, "leader", Node.getInstance().getTerm());
+        System.out.println(NodeClient.class.getCanonicalName()+" Get URI "+ getHttpUri);
+        HttpGet httpGet = new HttpGet(getHttpUri);
+        httpGet.setHeader("Accept", "application/json");
+        Vote vote = null;
+        try {
+            HttpResponse httpResponse = client.execute(httpGet);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            String content = EntityUtils.toString(httpEntity);
+            System.out.println(NodeClient.class.getCanonicalName() + " Candidacy response "+ content);
+            EntityUtils.consume(httpEntity);
+            JSONObject jsonContent = new JSONObject(content);
+            ObjectMapper mapper = new ObjectMapper();
+            vote = mapper.readValue(jsonContent.toString(), Vote.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            try {
+                client.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return vote;
+    }
+
     public static void main(String[] args) {
         NodeClient nodeClient = new NodeClient("localhost", 8080);
         HeartBeat heartBeat = nodeClient.sendHeartBeat();
         System.out.println(NodeClient.class.getCanonicalName()+" Heart beat response: "+ heartBeat);
+        nodeClient.sendCandidacyRequest();
     }
 }

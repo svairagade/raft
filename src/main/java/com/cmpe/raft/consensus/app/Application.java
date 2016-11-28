@@ -11,6 +11,10 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sushant on 26-11-2016.
@@ -24,9 +28,12 @@ public class Application {
     @Parameter(names = {"--dockerised", "-do"}, description = "Is the app dockerised")
     private static boolean dockerised = false;
     private static String uri = "http://%s:%d/raft/";
-
+    private static Map<String, List<Integer>> clusterNodes = new HashMap<>();
 
     private static HttpServer startServer() {
+        List<Integer> ports = new ArrayList<>();
+        ports.add(8080);
+        clusterNodes.put("localhost", ports);
         uri = String.format(uri, ip, port);
         System.out.println(uri);
         if (!dockerised) {
@@ -67,5 +74,17 @@ public class Application {
 
     public static Integer getPort() {
         return port;
+    }
+
+    public static Map<String, List<Integer>> getClusterNodes() {
+        return clusterNodes;
+    }
+
+    public static Integer getNumberOfNodes() {
+        int i = 0;
+        for (String host: clusterNodes.keySet()) {
+            i += clusterNodes.get(host).size();
+        }
+        return i;
     }
 }

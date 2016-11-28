@@ -26,6 +26,7 @@ public class NodeResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/heartbeat")
     public Response heartBeat(@QueryParam("ip") String ip, @QueryParam(value = "port") Integer port, @QueryParam(value = "term") Long term) {
         if (StringUtil.isEmpty(ip) || port == null || term == null)
             return Response.status(Response.Status.BAD_REQUEST)

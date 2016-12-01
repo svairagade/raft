@@ -1,5 +1,6 @@
 package com.cmpe.raft.consensus.node;
 
+import com.cmpe.raft.consensus.model.AddNode;
 import com.cmpe.raft.consensus.model.HeartBeat;
 import com.cmpe.raft.consensus.model.Vote;
 import com.cmpe.raft.consensus.node.state.NodeState;
@@ -68,5 +69,9 @@ public class Node {
 
     public Vote reactToLeaderRequest(long term) {
         return currentState.onCandidacyRequest(term);
+    }
+
+    public AddNode reactToAddNode(AddNode addNode) {
+        return currentState.addNode(addNode);
     }
 }

@@ -13,6 +13,7 @@
         <jersey.version>2.16</jersey.version>
         <jersey-json.version>1.19.3</jersey-json.version>
         <jcommander.version>1.58</jcommander.version>
+        <jedis.version>2.9.0</jedis.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.7</jdk.version>
     </properties>
@@ -58,6 +59,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20141113</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
         </dependency>
     </dependencies>
     <build>

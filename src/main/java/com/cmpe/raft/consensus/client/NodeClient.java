@@ -1,18 +1,27 @@
 package com.cmpe.raft.consensus.client;
 
 import com.cmpe.raft.consensus.app.Application;
+import com.cmpe.raft.consensus.model.AddNode;
 import com.cmpe.raft.consensus.model.HeartBeat;
 import com.cmpe.raft.consensus.model.Vote;
 import com.cmpe.raft.consensus.node.Node;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.glassfish.grizzly.http.server.accesslog.ApacheLogFormat;
 import org.json.JSONObject;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 /**
@@ -24,6 +33,7 @@ public class NodeClient {
     private Integer port;
     private CloseableHttpClient client = null;
     private String apiURL = null;
+    private String base_uri= null;
 
     public NodeClient(String host, Integer port) {
         this.host = host;
@@ -34,6 +44,7 @@ public class NodeClient {
     private void initialize() {
         client = HttpClients.createDefault();
         apiURL = "http://" + host + ":" + port + "/raft/node/%s?ip="+ Application.getIp() +"&port="+Application.getPort()+"&term=%d"; // Using sample instead of g
+        base_uri= "http://" + host + ":" + port + "/raft/node";
     }
 
     public HeartBeat sendHeartBeat() {
@@ -85,6 +96,18 @@ public class NodeClient {
             }
         }
         return vote;
+    }
+
+    public AddNode sendAddNodeRequest() {
+        AddNode addNode= new AddNode(Application.getIp(), Application.getPort());
+        Entity<AddNode> addNodeEntity = Entity.json(addNode);
+        Client client = ClientBuilder.newClient();
+        WebTarget baseTarget = client.target(base_uri);
+        Response postResponse = baseTarget
+                .request(MediaType.APPLICATION_JSON)
+                .post(addNodeEntity);
+        AddNode newAddNode = postResponse.readEntity(AddNode.class);
+        return newAddNode;
     }
 
     public static void main(String[] args) {

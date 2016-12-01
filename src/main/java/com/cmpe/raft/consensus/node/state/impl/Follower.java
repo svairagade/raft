@@ -2,6 +2,7 @@ package com.cmpe.raft.consensus.node.state.impl;
 
 
 import com.cmpe.raft.consensus.app.Application;
+import com.cmpe.raft.consensus.model.AddNode;
 import com.cmpe.raft.consensus.model.HeartBeat;
 import com.cmpe.raft.consensus.model.Vote;
 import com.cmpe.raft.consensus.node.Node;
@@ -9,7 +10,6 @@ import com.cmpe.raft.consensus.node.state.NodeState;
 import com.cmpe.raft.consensus.util.ServiceUtil;
 import com.cmpe.raft.consensus.util.StopWatch;
 
-import java.util.Date;
 import java.util.concurrent.Callable;
 
 /**
@@ -28,7 +28,7 @@ public class Follower implements NodeState, Callable {
 
     @Override
     public void performTask() {
-        System.out.println(Follower.class.getCanonicalName() + " perform task.");
+        System.out.println(Follower.class.getCanonicalName() + " STATE CHANGED");
         stopWatch.start();
     }
 
@@ -52,7 +52,14 @@ public class Follower implements NodeState, Callable {
     }
 
     @Override
+    public AddNode addNode(AddNode addNode) {
+        Application.addNode(addNode);
+        return addNode;
+    }
+
+    @Override
     public Object call() throws Exception {
+
         node.setCurrentState(node.getCandidateState());
         return null;
     }

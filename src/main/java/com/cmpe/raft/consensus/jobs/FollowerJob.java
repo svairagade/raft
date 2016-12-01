@@ -20,7 +20,7 @@ public class FollowerJob {
         };
 
         final ScheduledFuture<?> heartBeatHandle =
-                scheduler.scheduleAtFixedRate(heartBeat, 0, 2, TimeUnit.SECONDS);
+                scheduler.scheduleAtFixedRate(heartBeat, 0, 10, TimeUnit.SECONDS);
 
         /*scheduler.schedule(new Runnable() {
             public void run() {

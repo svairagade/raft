@@ -1,5 +1,6 @@
 package com.cmpe.raft.consensus.node.state;
 
+import com.cmpe.raft.consensus.model.AddNode;
 import com.cmpe.raft.consensus.model.HeartBeat;
 import com.cmpe.raft.consensus.model.Vote;
 
@@ -13,4 +14,6 @@ public interface NodeState {
     HeartBeat onHeartBeat(long term);
 
     Vote onCandidacyRequest(long term);
+
+    AddNode addNode(AddNode addNode);
 }

@@ -1,9 +1,11 @@
 package com.cmpe.raft.consensus.jobs;
 
 import com.cmpe.raft.consensus.client.NodeClient;
-import com.cmpe.raft.consensus.node.Node;
 
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Sushant on 26-11-2016.
@@ -31,7 +33,7 @@ public class HeartBeatJob {
         };
 
         final ScheduledFuture<?> heartBeatHandle =
-                scheduler.scheduleAtFixedRate(heartBeat, 0, 2, TimeUnit.SECONDS);
+                scheduler.scheduleAtFixedRate(heartBeat, 0, 5, TimeUnit.SECONDS);
 
         scheduler.schedule(new Runnable() {
             public void run() {

@@ -1,5 +1,6 @@
 package com.cmpe.raft.consensus.node;
 
+import com.cmpe.raft.consensus.app.Application;
 import com.cmpe.raft.consensus.model.AddNode;
 import com.cmpe.raft.consensus.model.HeartBeat;
 import com.cmpe.raft.consensus.model.Vote;
@@ -7,6 +8,7 @@ import com.cmpe.raft.consensus.node.state.NodeState;
 import com.cmpe.raft.consensus.node.state.impl.Candidate;
 import com.cmpe.raft.consensus.node.state.impl.Follower;
 import com.cmpe.raft.consensus.node.state.impl.Leader;
+import sun.applet.AppletListener;
 
 /**
  * Created by Sushant on 26-11-2016.
@@ -18,12 +20,16 @@ public class Node {
     private NodeState candidateState;
     private NodeState followerState;
     private NodeState leaderState;
+    private String leaderHost;
+    private Integer leaderPort;
     private Long term = new Long(0);
 
     private Node() {
         candidateState = new Candidate(this);
         followerState = new Follower(this);
         leaderState = new Leader(this);
+        leaderHost = Application.getIp();
+        leaderPort = Application.getPort();
         this.setCurrentState(followerState); //default state
     }
 
@@ -47,6 +53,7 @@ public class Node {
     }
 
     public void setCurrentState(NodeState currentState) {
+        this.currentState.stopJobs();
         this.currentState = currentState;
         this.currentState.performTask();
     }
@@ -63,8 +70,8 @@ public class Node {
         return leaderState;
     }
 
-    public HeartBeat reactToHeartBeat(long term) {
-        return currentState.onHeartBeat(term);
+    public HeartBeat reactToHeartBeat(long term, String ip, Integer port) {
+        return currentState.onHeartBeat(term, ip, port);
     }
 
     public Vote reactToLeaderRequest(long term) {
@@ -73,5 +80,25 @@ public class Node {
 
     public AddNode reactToAddNode(AddNode addNode) {
         return currentState.addNode(addNode);
+    }
+
+    public String getStatus() {
+        return currentState.getName();
+    }
+
+    public String getLeaderHost() {
+        return leaderHost;
+    }
+
+    public void setLeaderHost(String leaderHost) {
+        this.leaderHost = leaderHost;
+    }
+
+    public Integer getLeaderPort() {
+        return leaderPort;
+    }
+
+    public void setLeaderPort(Integer leaderPort) {
+        this.leaderPort = leaderPort;
     }
 }

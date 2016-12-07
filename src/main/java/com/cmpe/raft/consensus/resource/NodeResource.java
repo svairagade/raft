@@ -1,9 +1,8 @@
 package com.cmpe.raft.consensus.resource;
 
+import com.cmpe.raft.consensus.dao.Dao;
 import com.cmpe.raft.consensus.error.Error;
-import com.cmpe.raft.consensus.model.AddNode;
-import com.cmpe.raft.consensus.model.HeartBeat;
-import com.cmpe.raft.consensus.model.Vote;
+import com.cmpe.raft.consensus.model.*;
 import com.cmpe.raft.consensus.node.Node;
 import com.cmpe.raft.consensus.util.StringUtil;
 
@@ -12,6 +11,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.util.List;
 
 /**
  * Created by Sushant on 26-11-2016.
@@ -30,7 +30,7 @@ public class NodeResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(Error.INVALID_REQUEST_MISSING_QUERY_PARAM)
                     .build();
-        HeartBeat heartBeat = node.reactToHeartBeat(term);
+        HeartBeat heartBeat = node.reactToHeartBeat(term, ip, port);
         return Response.ok()
                 .entity(heartBeat)
                 .build();
@@ -60,6 +60,67 @@ public class NodeResource {
         AddNode addNodeResponse = node.reactToAddNode(addNode);
         return Response.created(URI.create(""))
                 .entity(addNodeResponse)
+                .build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doGetStatus() {
+        Status status = new Status(node.getStatus());
+        return Response.ok()
+                .entity(status)
+                .build();
+    }
+
+
+    @GET
+    @Path("/person")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doGetAll() {
+        List<Person> persons = Dao.getAll();
+        return Response.ok()
+                .entity(persons)
+                .build();
+    }
+
+    @GET
+    @Path("/person/{person_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doGetWork(@PathParam("person_id") Integer id) {
+        Person person = Dao.getPerson(id);
+        return Response.ok()
+                .entity(person)
+                .build();
+    }
+
+    @PUT
+    @Path("/person/{person_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doPut(@PathParam("person_id") Integer id, Person person) {
+        person.setId(id);
+        Person newPerson = Dao.updatePerson(person);
+        return Response.accepted()
+                .entity(newPerson)
+                .build();
+    }
+
+    @POST
+    @Path("/person")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doPost(Person person) {
+        Person newPerson = Dao.addPerson(person);
+        return Response.status(Response.Status.CREATED)
+                .entity(newPerson)
+                .build();
+    }
+
+    @DELETE
+    @Path("/person/{person_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doPut(@PathParam("person_id") Integer id) {
+        Person person = Dao.deletePerson(id);
+        return Response.accepted()
+                .entity(person)
                 .build();
     }
 }

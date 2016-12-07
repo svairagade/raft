@@ -3,6 +3,7 @@ package com.cmpe.raft.consensus.client;
 import com.cmpe.raft.consensus.app.Application;
 import com.cmpe.raft.consensus.model.AddNode;
 import com.cmpe.raft.consensus.model.HeartBeat;
+import com.cmpe.raft.consensus.model.Person;
 import com.cmpe.raft.consensus.model.Vote;
 import com.cmpe.raft.consensus.node.Node;
 import org.apache.http.HttpEntity;
@@ -23,6 +24,8 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Sushant on 27-11-2016.
@@ -36,6 +39,20 @@ public class NodeClient {
     private String base_uri= null;
 
     public NodeClient(String host, Integer port) {
+        this.host = host;
+        this.port = port;
+        initialize();
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void updateHost(String host, Integer port) {
         this.host = host;
         this.port = port;
         initialize();
@@ -108,6 +125,66 @@ public class NodeClient {
                 .post(addNodeEntity);
         AddNode newAddNode = postResponse.readEntity(AddNode.class);
         return newAddNode;
+    }
+
+    public Person sendDoPostRequest(Person person) {
+        Entity<Person> entityPerson = Entity.json(person);
+        Client client = ClientBuilder.newClient();
+        WebTarget baseTarget = client.target(base_uri);
+        Response postResponse = baseTarget
+                .path("person")
+                .request(MediaType.APPLICATION_JSON)
+                .post(entityPerson);
+        Person newPerson = postResponse.readEntity(Person.class);
+        return newPerson;
+    }
+
+    public Person sendDoPutRequest(Person person) {
+        Entity<Person> entityPerson = Entity.json(person);
+        Client client = ClientBuilder.newClient();
+        WebTarget baseTarget = client.target(base_uri);
+        Response postResponse = baseTarget
+                .path("person")
+                .path(person.getId().toString())
+                .request(MediaType.APPLICATION_JSON)
+                .put(entityPerson);
+        Person newPerson = postResponse.readEntity(Person.class);
+        return newPerson;
+    }
+
+    public List<Person> sendDoGetAllRequest() {
+        Client client = ClientBuilder.newClient();
+        WebTarget baseTarget = client.target(base_uri);
+        Response postResponse = baseTarget
+                .path("person")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        List<Person> persons = Arrays.asList(postResponse.readEntity(Person[].class));
+        return persons;
+    }
+
+    public Person sendDoGetRequest(Integer id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget baseTarget = client.target(base_uri);
+        Response postResponse = baseTarget
+                .path("person")
+                .path(id.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        Person person = postResponse.readEntity(Person.class);
+        return person;
+    }
+
+    public Person sendDoDeleteRequest(Integer id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget baseTarget = client.target(base_uri);
+        Response postResponse = baseTarget
+                .path("person")
+                .path(id.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .delete();
+        Person person = postResponse.readEntity(Person.class);
+        return person;
     }
 
     public static void main(String[] args) {

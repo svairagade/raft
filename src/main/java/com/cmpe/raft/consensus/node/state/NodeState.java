@@ -11,9 +11,14 @@ public interface NodeState {
 
     void performTask();
 
-    HeartBeat onHeartBeat(long term);
+    HeartBeat onHeartBeat(long term, String host, int port);
 
     Vote onCandidacyRequest(long term);
 
     AddNode addNode(AddNode addNode);
+
+    String getName();
+
+    void stopJobs();
+
 }

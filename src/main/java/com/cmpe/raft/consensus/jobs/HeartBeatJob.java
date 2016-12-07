@@ -14,6 +14,7 @@ public class HeartBeatJob {
 
     private String  host;
     private Integer port;
+    private ScheduledFuture<?> heartBeat;
 
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
@@ -34,11 +35,15 @@ public class HeartBeatJob {
 
         final ScheduledFuture<?> heartBeatHandle =
                 scheduler.scheduleAtFixedRate(heartBeat, 0, 5, TimeUnit.SECONDS);
-
+        this.heartBeat = heartBeatHandle;
         scheduler.schedule(new Runnable() {
             public void run() {
                 heartBeatHandle.cancel(true);
             }
         }, 365*10 , TimeUnit.DAYS);  //TODO: This should be configurable, for now running it for 10 years
+    }
+
+    public void stopJob() {
+        heartBeat.cancel(true);
     }
 }

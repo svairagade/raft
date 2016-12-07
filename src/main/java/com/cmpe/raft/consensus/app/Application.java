@@ -94,28 +94,6 @@ public class Application {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        Application application = new Application();
-        new JCommander(application, args);
-        HttpServer server = null;
-        try {
-            server = startServer();
-            Node.getInstance();     //Just to create an instance and initialise
-            //new HeartBeatJob().sendHeartBeat();
-            System.out.println(String.format("Jersey app started with WADL available at "
-                    + "%sapplication.wadl\nHit enter to stop it...", uri));
-            System.in.read();
-            deleteNode();
-        } catch (IOException io) {
-            //TODO log
-        } finally {
-            if (server != null) {
-                server.shutdownNow();
-            }
-            deleteNode();
-        }
-    }
-
     private static void deleteNode() {
         String ports = JEDIS.hget(HM_NAME, ip);
         String[] portsString = ports.split(",");
@@ -162,6 +140,28 @@ public class Application {
             ports = new HashSet<>();
             ports.add(addNode.getPort());
             clusterNodes.put(addNode.getIp(), ports);
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Application application = new Application();
+        new JCommander(application, args);
+        HttpServer server = null;
+        try {
+            server = startServer();
+            Node.getInstance();     //Just to create an instance and initialise
+            //new HeartBeatJob().sendHeartBeat();
+            System.out.println(String.format("Jersey app started with WADL available at "
+                    + "%sapplication.wadl\nHit enter to stop it...", uri));
+            System.in.read();
+            deleteNode();
+        } catch (IOException io) {
+            //TODO log
+        } finally {
+            if (server != null) {
+                server.shutdownNow();
+            }
+            deleteNode();
         }
     }
 }

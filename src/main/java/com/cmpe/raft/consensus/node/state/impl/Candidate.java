@@ -53,10 +53,12 @@ public class Candidate implements NodeState {
     }
 
     @Override
-    public HeartBeat onHeartBeat(long term) {
+    public HeartBeat onHeartBeat(long term, String host, int port) {
         System.out.println(Candidate.class.getCanonicalName() + " received Heart beat.");
         if (node.getTerm() < term) {
             node.setTerm(term);
+            node.setLeaderHost(host);
+            node.setLeaderPort(port);
             node.setCurrentState(node.getFollowerState()); //finds a better candidate
         }
         return ServiceUtil.constructHeartBeat(node);
@@ -72,6 +74,16 @@ public class Candidate implements NodeState {
         Application.addNode(addNode);
         new CandidacyJob(this, addNode.getIp(), addNode.getPort()).sendCandidacyRequest();
         return addNode;
+    }
+
+    @Override
+    public String getName() {
+        return "CANDIDATE";
+    }
+
+    @Override
+    public void stopJobs() {
+        // No jobs running for this state
     }
 
     public void onResponse(Vote vote) {
@@ -97,4 +109,6 @@ public class Candidate implements NodeState {
             }
         }
     }
+
+
 }

@@ -29,15 +29,15 @@ public class Leader implements NodeState {
     @Override
     public void performTask() {
         System.out.println(Leader.class.getCanonicalName() + " STATE CHANGED");
-        //TODO: yay, I've to keep sending heart beat to all
+        //yay, I've to keep sending heart beat to all
         for (String host : Application.getClusterNodes().keySet()) {
             for (Integer port : Application.getClusterNodes().get(host)) {
                 HeartBeatJob heartBeatJob = new HeartBeatJob(host, port);
                 heartBeatJob.sendHeartBeat();
                 heartBeatJobs.add(heartBeatJob);
-                workJob.listen();
             }
         }
+        workJob.listen();
     }
 
     @Override

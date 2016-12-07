@@ -8,14 +8,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ClientRequest {
     private String type;
-    private Property property;
+    private Person person;
 
     public ClientRequest() {
     }
 
-    public ClientRequest(String type, Property property) {
+    public ClientRequest(String type, Person person) {
         this.type = type;
-        this.property = property;
+        this.person = person;
     }
 
     public String getType() {
@@ -26,11 +26,11 @@ public class ClientRequest {
         this.type = type;
     }
 
-    public Property getProperty() {
-        return property;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setProperty(Property property) {
-        this.property = property;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

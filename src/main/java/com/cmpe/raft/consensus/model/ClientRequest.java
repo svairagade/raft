@@ -7,23 +7,23 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class ClientRequest {
-    private String type;
+    private String action;
     private Person person;
 
     public ClientRequest() {
     }
 
     public ClientRequest(String type, Person person) {
-        this.type = type;
+        this.action = type;
         this.person = person;
     }
 
-    public String getType() {
-        return type;
+    public String getAction() {
+        return action;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public Person getPerson() {

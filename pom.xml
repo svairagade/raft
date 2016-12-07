@@ -65,6 +65,11 @@
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>4.0.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

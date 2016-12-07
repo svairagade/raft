@@ -15,5 +15,4 @@ public class WorkJob {
     public void stopListeing() {
         //Stop listening
     }
-
 }

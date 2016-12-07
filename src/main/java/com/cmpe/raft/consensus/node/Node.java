@@ -25,11 +25,11 @@ public class Node {
     private Long term = new Long(0);
 
     private Node() {
+        leaderHost = Application.getIp();
+        leaderPort = Application.getPort();
         candidateState = new Candidate(this);
         followerState = new Follower(this);
         leaderState = new Leader(this);
-        leaderHost = Application.getIp();
-        leaderPort = Application.getPort();
         this.setCurrentState(followerState); //default state
     }
 
@@ -53,7 +53,9 @@ public class Node {
     }
 
     public void setCurrentState(NodeState currentState) {
-        this.currentState.stopJobs();
+        if(this.currentState!=null) {
+            this.currentState.stopJobs();
+        }
         this.currentState = currentState;
         this.currentState.performTask();
     }

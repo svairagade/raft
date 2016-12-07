@@ -1,4 +1,4 @@
-# this class models the request to be sent to the raft broker
+# This class models the request to be sent to the raft broker
 # @author Nitinkumar Gove
 # @version 2.0
 

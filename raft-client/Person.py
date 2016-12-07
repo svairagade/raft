@@ -1,6 +1,6 @@
-# this class models person record
+# This class models person record
 # @author Nitinkumar Gove
-# @version 2.0
+# @version 3.0
 
 import json
 class Person:
@@ -21,7 +21,3 @@ class Person:
     
     def setAge(self,age):
         self.age = age
-
-#p = Person(-1,"Gedam",24)
-#p.showPersonRecord()
-#print p.toJSON()

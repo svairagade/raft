@@ -23,3 +23,4 @@ To implement raft distributed consensus algorithm along with graphical visualiza
 #References
 1. [Introduction to Raft](https://raft.github.io/)
 2. [Raft Visualization](http://thesecretlivesofdata.com/raft/)
+3. [In Search of an Understandable Consensus Algorithm](https://raft.github.io/raft.pdf)

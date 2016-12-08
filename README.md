@@ -18,7 +18,7 @@ To implement raft distributed consensus algorithm along with graphical visualiza
 4. [Python](https://www.python.org/downloads/)
 
 #Demo
-[Watch Live Demo Here](https://www.youtube.com/watch?v=VgWI_JIyu80)
+[Watch Demo Here](https://www.youtube.com/watch?v=VgWI_JIyu80)
 
 #References
 1. [Introduction to Raft](https://raft.github.io/)

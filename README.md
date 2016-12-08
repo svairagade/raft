@@ -1,20 +1,15 @@
-# Raft Distributed Consensus 
-This repository contains a Java based implementation of Raft Distributed Consensus Algorithm. 
 
-# Modules Implemented
-1. Leader Election 
+#CMPE 273 Group Project - Fall 2016
+__Project Team - CodeMonks__
 
-This module is repsonsible for electing a new leader in case the current leader fails. 
-2. Data Replication
-3. Java - Redis Module 
-4. Python - RabbitMQ Module
-5. Java - RabbitMQ Module
+#Team Members
+1. [Nitinkumar Gove](https://github.com/Nitinkumar-Gove)
+2. [Sushant Vairagade](https://github.com/sjsu-sushant)
+3. [Sohrab Ali](https://github.com/ali-sohrab)
+4. [Saurabh Gedam](https://github.com/saurabhgedam)
 
-This module reads the message requests sent by the python client.
-
-6. HTML Dashboard
-
-This module implements a dashboard built in html which displays the current status of each node in the cluster. 
+#Objective
+To implement raft distributed consensus algorithm.
 
 #Project Requirements
 1. [Install Redis](https://redis.io/)
@@ -24,3 +19,7 @@ This module implements a dashboard built in html which displays the current stat
 
 #Demo
 [Watch Live Demo Here](https://www.youtube.com/watch?v=VgWI_JIyu80)
+
+#References
+1. [Introduction to Raft](https://raft.github.io/)
+2. [Raft Visualization](http://thesecretlivesofdata.com/raft/)

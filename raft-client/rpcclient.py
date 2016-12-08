@@ -13,7 +13,7 @@ from Request import Request
 class RaftRpcClient(object):
     def __init__(self):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(
-                host='10.250.109.180',port=5672))
+                host='localhost',port=5672))
 
         self.channel = self.connection.channel()
 

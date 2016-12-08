@@ -18,7 +18,7 @@ import javax.ws.rs.client.Entity;
  * Created by Sushant on 06-12-2016.
  */
 public class WorkJob {
-    private static final String QUEUE_HOST = "10.250.109.180";
+    private static final String QUEUE_HOST = "localhost";
     private static final String REQUEST_QUEUE = "raft_queue";
     private static final Integer REQUEST_PORT = 5672;
     private static Connection connection = null;

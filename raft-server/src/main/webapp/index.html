@@ -14,7 +14,7 @@
 		var xmlhttp;
 		xmlhttp = new XMLHttpRequest();
         var empno = document.getElementById("empno");
-        var url = "http://10.250.109.180:9000/raft/monitor";
+        var url = "http://localhost:9000/raft/monitor";
         xmlhttp.open('GET',url,true);
         xmlhttp.send(null);
         xmlhttp.onreadystatechange = function() {

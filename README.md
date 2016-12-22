@@ -1,15 +1,8 @@
 
-#CMPE 273 Group Project - Fall 2016
-__Project Team - CodeMonks__
-
-#Team Members
-1. [Nitinkumar Gove](https://github.com/Nitinkumar-Gove)
-2. [Sushant Vairagade](https://github.com/sjsu-sushant)
-3. [Sohrab Ali](https://github.com/ali-sohrab)
-4. [Saurabh Gedam](https://github.com/saurabhgedam)
+#Repliaction using Raft Consensus Algorithm
 
 #Objective
-To implement raft distributed consensus algorithm along with graphical visualization of cluster node states and data replication mechanism across all the cluster nodes.
+To implement data replication in a cluster using raft distributed consensus algorithm along with graphical visualization of cluster node states and data replication mechanism across all the cluster nodes.
 
 #How to
 1. Start the RabbitMQ service

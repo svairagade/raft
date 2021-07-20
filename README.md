@@ -30,3 +30,6 @@ To implement data replication in a cluster using raft distributed consensus algo
 1. [Introduction to Raft](https://raft.github.io/)
 2. [Raft Visualization](http://thesecretlivesofdata.com/raft/)
 3. [In Search of an Understandable Consensus Algorithm](https://raft.github.io/raft.pdf)
+
+# Contact
+Reach out to me at https://www.linkedin.com/in/sushant-vairagade/
